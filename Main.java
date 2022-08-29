@@ -1,124 +1,115 @@
-package com.timbuchalka;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
-    private static Map<HeavenlyBody.Key, HeavenlyBody> solarSystem = new HashMap<>();
-    private static Set<HeavenlyBody> planets = new HashSet<>();
 
     public static void main(String[] args) {
-        HeavenlyBody temp = new Planet("Mercury", 88);
-        solarSystem.put(temp.getKey(), temp);
-        planets.add(temp);
 
-        temp = new Planet("Venus", 225);
-        solarSystem.put(temp.getKey(), temp);
-        planets.add(temp);
+        Employee john = new Employee("John Doe", 30);
+        Employee tim = new Employee("Tim Buchalka", 21);
+        Employee jack = new Employee("Jack Hill", 40);
+        Employee snow = new Employee("Snow White", 22);
 
-        temp = new Planet("Earth", 365);
-        solarSystem.put(temp.getKey(), temp);
-        planets.add(temp);
+        List<Employee> employees = new ArrayList<>();
+        employees.add(john);
+        employees.add(tim);
+        employees.add(jack);
+        employees.add(snow);
 
-        HeavenlyBody tempMoon = new Moon("Moon", 27);
-        solarSystem.put(tempMoon.getKey(), tempMoon);
-        temp.addSatellite(tempMoon);
+        employees.forEach(employee -> {
+            System.out.println(employee.getName());
+            System.out.println(employee.getAge());
+        });
 
-        temp = new Planet("Mars", 687);
-        solarSystem.put(temp.getKey(), temp);
-        planets.add(temp);
+//        for(Employee employee : employees) {
+//            System.out.println(employee.getName());
+//            System.out.println(employee.getAge());
+//        }
 
-        tempMoon = new Moon("Deimos", 1.3);
-        solarSystem.put(tempMoon.getKey(), tempMoon);
-        temp.addSatellite(tempMoon); // temp is still Mars
+//        System.out.println("******************");
+//
+//        Employee employee;
+//
+//        for(int i=0; i<employees.size(); i++) {
+//            employee = employees.get(i);
+//            System.out.println(employee.getName());
+//            new Thread(() -> System.out.println(employee.getAge())).start();
+//        }
 
-        tempMoon = new Moon("Phobos", 0.3);
-        solarSystem.put(tempMoon.getKey(), tempMoon);
-        temp.addSatellite(tempMoon); // temp is still Mars
-
-        temp = new Planet("Jupiter", 4332);
-        solarSystem.put(temp.getKey(), temp);
-        planets.add(temp);
-
-        tempMoon = new Moon("Io", 1.8);
-        solarSystem.put(tempMoon.getKey(), tempMoon);
-        temp.addSatellite(tempMoon); // temp is still Jupiter
-
-        tempMoon = new Moon("Europa", 3.5);
-        solarSystem.put(tempMoon.getKey(), tempMoon);
-        temp.addSatellite(tempMoon); // temp is still Jupiter
-
-        tempMoon = new Moon("Ganymede", 7.1);
-        solarSystem.put(tempMoon.getKey(), tempMoon);
-        temp.addSatellite(tempMoon); // temp is still Jupiter
-
-        tempMoon = new Moon("Callisto", 16.7);
-        solarSystem.put(tempMoon.getKey(), tempMoon);
-        temp.addSatellite(tempMoon); // temp is still Jupiter
-
-        temp = new Planet("Saturn", 10759);
-        solarSystem.put(temp.getKey(), temp);
-        planets.add(temp);
-
-        temp = new Planet("Uranus", 30660);
-        solarSystem.put(temp.getKey(), temp);
-        planets.add(temp);
-
-        temp = new Planet("Neptune", 165);
-        solarSystem.put(temp.getKey(), temp);
-        planets.add(temp);
-
-        temp = new Planet("Pluto", 248);
-        solarSystem.put(temp.getKey(), temp);
-        planets.add(temp);
-
-        System.out.println("Planets");
-        for(HeavenlyBody planet : planets) {
-            System.out.println("\t" + planet.getKey());
-        }
-
-        HeavenlyBody body = solarSystem.get(HeavenlyBody.makeKey("Mars", HeavenlyBody.BodyTypes.PLANET));
-        System.out.println("Moons of " + body.getKey());
-        for(HeavenlyBody jupiterMoon: body.getSatellites()) {
-            System.out.println("\t" + jupiterMoon.getKey());
-        }
-
-        Set<HeavenlyBody> moons = new HashSet<>();
-        for(HeavenlyBody planet : planets) {
-            moons.addAll(planet.getSatellites());
-        }
-
-        System.out.println("All Moons");
-        for(HeavenlyBody moon : moons) {
-            System.out.println("\t" + moon.getKey());
-        }
-
-        HeavenlyBody pluto = new DwarfPlanet("Pluto", 842);
-        planets.add(pluto);
-
-        for(HeavenlyBody planet : planets) {
-            System.out.println(planet);
-//            System.out.println(planet.getKey() + ": " + planet.getOrbitalPeriod());
-        }
-
-        HeavenlyBody earth1 = new Planet("Earth", 365);
-        HeavenlyBody earth2 = new Planet("Earth", 365);
-        System.out.println(earth1.equals(earth2));
-        System.out.println(earth2.equals(earth1));
-        System.out.println(earth1.equals(pluto));
-        System.out.println(pluto.equals(earth1));
-
-        solarSystem.put(pluto.getKey(), pluto);
-        System.out.println(solarSystem.get(HeavenlyBody.makeKey("Pluto", HeavenlyBody.BodyTypes.PLANET)));
-        System.out.println(solarSystem.get(HeavenlyBody.makeKey("Pluto", HeavenlyBody.BodyTypes.DWARF_PLANET)));
-
-        System.out.println();
-        System.out.println("The solar system contains:");
-        for(HeavenlyBody heavenlyBody : solarSystem.values()) {
-            System.out.println(heavenlyBody);
-        }
 
     }
+
+    public final static String doStringStuff(UpperConcat uc, String s1, String s2) {
+        return uc.upperAndConcat(s1, s2);
+    }
 }
+
+class Employee {
+    private String name;
+    private int age;
+
+    public Employee(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+
+interface UpperConcat {
+    public String upperAndConcat(String s1, String s2);
+}
+
+class AnotherClass {
+
+    public String doSomething() {
+        int i = 0;
+
+        UpperConcat uc = (s1, s2) -> {
+            System.out.println("The lambda expression's class is " + getClass().getSimpleName());
+            System.out.println("i in the lambda expression = " + i);
+            String result = s1.toUpperCase() + s2.toUpperCase();
+            return result;
+        };
+
+        System.out.println("The AnotherClass class's name is " + getClass().getSimpleName());
+        return Main.doStringStuff(uc,"String1","String2");
+
+    }
+
+    public void printValue() {
+
+        int number = 25;
+
+        Runnable r = () -> {
+            try {
+                Thread.sleep(5000);
+            } catch(InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("The value is " + number);
+        };
+
+        new Thread(r).start();
+    }
+}
+
+
+
+
+
+
