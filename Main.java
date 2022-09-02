@@ -1,115 +1,129 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main {
 
     public static void main(String[] args) {
+	    List<String> someBingoNumbers = Arrays.asList(
+	            "N40", "N36",
+                "B12", "B6",
+                "G53", "G49", "G60", "G50", "g64",
+                "I26", "I17", "I29",
+                "O71");
 
-        Employee john = new Employee("John Doe", 30);
-        Employee tim = new Employee("Tim Buchalka", 21);
-        Employee jack = new Employee("Jack Hill", 40);
-        Employee snow = new Employee("Snow White", 22);
+        List<String> gNumbers = new ArrayList<>();
 
-        List<Employee> employees = new ArrayList<>();
-        employees.add(john);
-        employees.add(tim);
-        employees.add(jack);
-        employees.add(snow);
-
-        employees.forEach(employee -> {
-            System.out.println(employee.getName());
-            System.out.println(employee.getAge());
-        });
-
-//        for(Employee employee : employees) {
-//            System.out.println(employee.getName());
-//            System.out.println(employee.getAge());
-//        }
-
-//        System.out.println("******************");
+//        someBingoNumbers.forEach(number -> {
+//            if(number.toUpperCase().startsWith("G")) {
+//                gNumbers.add(number);
+////                System.out.println(number);
+//            }
+//        });
 //
-//        Employee employee;
-//
-//        for(int i=0; i<employees.size(); i++) {
-//            employee = employees.get(i);
-//            System.out.println(employee.getName());
-//            new Thread(() -> System.out.println(employee.getAge())).start();
+//        gNumbers.sort((String s1, String s2) -> s1.compareTo(s2));
+//        gNumbers.forEach((String s) -> System.out.println(s));
+        someBingoNumbers
+                .stream()
+                .map(String::toUpperCase)
+                .filter(s->s.startsWith("G"))
+                .sorted()
+                .forEach(System.out::println);
+
+        Stream<String> ioNumberStream = Stream.of("I26", "I17", "I29", "O71");
+        Stream<String> inNumberStream = Stream.of("N40", "N36", "I26", "I17", "I29", "O71");
+        Stream<String> concatStream = Stream.concat(ioNumberStream, inNumberStream);
+        System.out.println("-----------------------");
+        System.out.println(concatStream
+                .distinct()
+                .peek(System.out::println)
+                .count());
+
+        
+        
+        System.out.println("***********************");
+        
+        Employee john = new Employee("John"," Doe", "kannur");
+        Employee jane = new Employee("Jane" ,"Deer","hennur" );
+        Employee jack = new Employee("Jack", "Hill","banglore");
+        Employee snow = new Employee("Snow","White", "banglore");
+        Employee ram = new Employee("ram","lakhan", "mumbai");
+        Employee karan = new Employee("karan","kumar", "banglore");
+
+        List<Employee> emp = new ArrayList<Employee>();
+        emp.add(john);
+        emp.add(jane);
+        emp.add(jack);
+        emp.add(snow);
+        emp.add(ram);
+        emp.add(karan);
+        
+        long count = emp.stream()
+        		.filter(s->s.getPlace().equals("banglore"))
+        		.count();
+        System.out.println(count);
+        
+        emp.stream().filter(e->e.getPlace().equals("banglore")).map(t->t.getName()).forEach(System.out::println);
+        
+        System.out.println("****************");
+       
+        
+        
+        
+        Department hr = new Department("Human Resources");
+        hr.addEmployee(jane);
+        hr.addEmployee(jack);
+        hr.addEmployee(snow);
+        Department accounting = new Department("Accounting");
+        accounting.addEmployee(john);
+
+        List<Department> departments = new ArrayList<>();
+        departments.add(hr);
+        departments.add(accounting);
+
+        departments.stream()
+                .flatMap(department -> department.getEmployees().stream())
+                .forEach(System.out::println);
+
+        System.out.println("---------------");
+//        List<String> sortedGNumbers = someBingoNumbers
+//                .stream()
+//                .map(String::toUpperCase)
+//                .filter(s -> s.startsWith("G"))
+//                .sorted()
+//                .collect(Collectors.toList());
+
+        List<String> sortedGNumbers = someBingoNumbers
+                .stream()
+                .map(String::toUpperCase)
+                .filter(s -> s.startsWith("G"))
+                .sorted()
+                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+
+//        for(String s : sortedGNumbers) {
+//            System.out.println(s);
 //        }
+//        Map<Integer, List<Employee>> groupedByAge = departments.stream()
+//                .flatMap(department -> department.getEmployees().stream())
+//                .collect(Collectors.groupingBy(employee -> employee.getAge()));
+//
+//        departments.stream()
+//                .flatMap(department -> department.getEmployees().stream())
+//                .reduce((e1, e2) -> e1.getAge() < e2.getAge() ? e1 : e2)
+//                .ifPresent(System.out::println);
+//
+//        Stream.of("ABC", "AC", "BAA", "CCCC", "XY", "ST")
+//                .filter(s -> {
+//                    System.out.println(s);
+//                    return s.length() == 3;
+//                })
+//                .count();
+//
 
 
-    }
-
-    public final static String doStringStuff(UpperConcat uc, String s1, String s2) {
-        return uc.upperAndConcat(s1, s2);
     }
 }
-
-class Employee {
-    private String name;
-    private int age;
-
-    public Employee(String name, int age) {
-        this.name = name;
-        this.age = age;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-}
-
-interface UpperConcat {
-    public String upperAndConcat(String s1, String s2);
-}
-
-class AnotherClass {
-
-    public String doSomething() {
-        int i = 0;
-
-        UpperConcat uc = (s1, s2) -> {
-            System.out.println("The lambda expression's class is " + getClass().getSimpleName());
-            System.out.println("i in the lambda expression = " + i);
-            String result = s1.toUpperCase() + s2.toUpperCase();
-            return result;
-        };
-
-        System.out.println("The AnotherClass class's name is " + getClass().getSimpleName());
-        return Main.doStringStuff(uc,"String1","String2");
-
-    }
-
-    public void printValue() {
-
-        int number = 25;
-
-        Runnable r = () -> {
-            try {
-                Thread.sleep(5000);
-            } catch(InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println("The value is " + number);
-        };
-
-        new Thread(r).start();
-    }
-}
-
-
-
-
-
 
