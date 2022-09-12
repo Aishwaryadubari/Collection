@@ -1,41 +1,25 @@
 public class Employee {
     private String name;
-    private String lname;
-    private String place;
+    private int age;
 
-    public Employee(String name, String lname, String place) {
+    public Employee(String name, int age) {
         this.name = name;
-        this.lname=lname;
-        this.place=place;
+        this.age = age;
     }
 
-    public String getPlace() {
-		return place;
-	}
-
-	public void setPlace(String place) {
-		this.place = place;
-	}
-
-	public String getName() {
+    public String getName() {
         return name;
     }
 
-    public String getLname() {
-		return lname;
-	}
-
-	public void setLname(String lname) {
-		this.lname = lname;
-	}
-
-	public void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    
-    @Override
-    public String toString() {
-        return name+" "+lname;
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }
