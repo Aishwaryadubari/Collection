@@ -1,129 +1,95 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
 
     public static void main(String[] args) {
-	    List<String> someBingoNumbers = Arrays.asList(
-	            "N40", "N36",
-                "B12", "B6",
-                "G53", "G49", "G60", "G50", "g64",
-                "I26", "I17", "I29",
-                "O71");
+        String challenge1 = "I want a bike.";
+        System.out.println(challenge1.matches("I want a bike."));
 
-        List<String> gNumbers = new ArrayList<>();
+        String regEXp = "I want a \\w+.";
+        System.out.println(challenge1.matches(regEXp));
+        String challenge2 = "I want a ball.";
+        System.out.println(challenge2.matches(regEXp));
 
-//        someBingoNumbers.forEach(number -> {
-//            if(number.toUpperCase().startsWith("G")) {
-//                gNumbers.add(number);
-////                System.out.println(number);
-//            }
-//        });
-//
-//        gNumbers.sort((String s1, String s2) -> s1.compareTo(s2));
-//        gNumbers.forEach((String s) -> System.out.println(s));
-        someBingoNumbers
-                .stream()
-                .map(String::toUpperCase)
-                .filter(s->s.startsWith("G"))
-                .sorted()
-                .forEach(System.out::println);
+        String regExp1 = "I want a (bike|ball).";
+        System.out.println(challenge1.matches(regExp1));
+        System.out.println(challenge2.matches(regExp1));
 
-        Stream<String> ioNumberStream = Stream.of("I26", "I17", "I29", "O71");
-        Stream<String> inNumberStream = Stream.of("N40", "N36", "I26", "I17", "I29", "O71");
-        Stream<String> concatStream = Stream.concat(ioNumberStream, inNumberStream);
-        System.out.println("-----------------------");
-        System.out.println(concatStream
-                .distinct()
-                .peek(System.out::println)
-                .count());
+        String regExp3 = "I want a \\w+.";
+        Pattern pattern = Pattern.compile(regExp3);
+        Matcher matcher = pattern.matcher(challenge1);
+        System.out.println(matcher.matches());
 
-        
-        
-        System.out.println("***********************");
-        
-        Employee john = new Employee("John"," Doe", "kannur");
-        Employee jane = new Employee("Jane" ,"Deer","hennur" );
-        Employee jack = new Employee("Jack", "Hill","banglore");
-        Employee snow = new Employee("Snow","White", "banglore");
-        Employee ram = new Employee("ram","lakhan", "mumbai");
-        Employee karan = new Employee("karan","kumar", "banglore");
+        matcher = pattern.matcher(challenge2);
+        System.out.println(matcher.matches());
 
-        List<Employee> emp = new ArrayList<Employee>();
-        emp.add(john);
-        emp.add(jane);
-        emp.add(jack);
-        emp.add(snow);
-        emp.add(ram);
-        emp.add(karan);
-        
-        long count = emp.stream()
-        		.filter(s->s.getPlace().equals("banglore"))
-        		.count();
-        System.out.println(count);
-        
-        emp.stream().filter(e->e.getPlace().equals("banglore")).map(t->t.getName()).forEach(System.out::println);
-        
-        System.out.println("****************");
-       
-        
-        
-        
-        Department hr = new Department("Human Resources");
-        hr.addEmployee(jane);
-        hr.addEmployee(jack);
-        hr.addEmployee(snow);
-        Department accounting = new Department("Accounting");
-        accounting.addEmployee(john);
+        String challenge4 = "Replace all blanks with underscores.";
+        System.out.println(challenge4.replaceAll(" ", "_"));
+        System.out.println(challenge4.replaceAll("\\s", "_"));
 
-        List<Department> departments = new ArrayList<>();
-        departments.add(hr);
-        departments.add(accounting);
+        String challenge5 = "zaaabccccccccdddefffg";
+        System.out.println(challenge5.matches("[abcdefg]+"));
+        System.out.println(challenge5.matches("[a-g]+"));
 
-        departments.stream()
-                .flatMap(department -> department.getEmployees().stream())
-                .forEach(System.out::println);
+        System.out.println(challenge5.matches("^a{3}bc{8}d{3}ef{3}g$"));
+        System.out.println(challenge5.replaceAll("^a{3}bc{8}d{3}ef{3}g$", "REPLACED"));
 
-        System.out.println("---------------");
-//        List<String> sortedGNumbers = someBingoNumbers
-//                .stream()
-//                .map(String::toUpperCase)
-//                .filter(s -> s.startsWith("G"))
-//                .sorted()
-//                .collect(Collectors.toList());
+        String challenge7 = "abcd.135";
+        System.out.println(challenge7.matches("^[A-z][a-z]+\\.\\d+$"));
 
-        List<String> sortedGNumbers = someBingoNumbers
-                .stream()
-                .map(String::toUpperCase)
-                .filter(s -> s.startsWith("G"))
-                .sorted()
-                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+        String challenge8 = "abcd.135uvqz.7tzik.999";
+        Pattern pattern8 = Pattern.compile("[A-Za-z]+\\.(\\d+)");
+        Matcher matcher8 = pattern8.matcher(challenge8);
+        while(matcher8.find()) {
+            System.out.println("Occurrence: " + matcher8.group(1));
+        }
 
-//        for(String s : sortedGNumbers) {
-//            System.out.println(s);
-//        }
-//        Map<Integer, List<Employee>> groupedByAge = departments.stream()
-//                .flatMap(department -> department.getEmployees().stream())
-//                .collect(Collectors.groupingBy(employee -> employee.getAge()));
-//
-//        departments.stream()
-//                .flatMap(department -> department.getEmployees().stream())
-//                .reduce((e1, e2) -> e1.getAge() < e2.getAge() ? e1 : e2)
-//                .ifPresent(System.out::println);
-//
-//        Stream.of("ABC", "AC", "BAA", "CCCC", "XY", "ST")
-//                .filter(s -> {
-//                    System.out.println(s);
-//                    return s.length() == 3;
-//                })
-//                .count();
-//
+        String challenge9 = "abcd.135\tuvqz.7\ttzik.999\n";
+        Pattern pattern9 = Pattern.compile("[A-Za-z]+\\.(\\d+)\\s");
+        Matcher matcher9 = pattern9.matcher(challenge9);
+        while(matcher9.find()) {
+            System.out.println("Occurrence: " + matcher9.group(1));
+        }
+
+        String challenge10 = "abcd.135\tuvqz.7\ttzik.999\n";
+        Pattern pattern10 = Pattern.compile("[A-Za-z]+\\.(\\d+)\\s");
+        Matcher matcher10 = pattern10.matcher(challenge10);
+        while(matcher10.find()) {
+            System.out.println("Occurrence: start = " + matcher10.start(1) + " end = " + (matcher10.end(1) -1));
+        }
+
+        String challenge11 = "{0, 2}, {0, 5}, {1, 3}, {2, 4}";
+        Pattern pattern11 = Pattern.compile("\\{(.+?)\\}");
+        Matcher matcher11 = pattern11.matcher(challenge11);
+        while(matcher11.find()) {
+            System.out.println("Occurrence: " + matcher11.group(1));
+        }
+        System.out.println("*********************");
+
+        String challenge11a = "{0, 2}, {0, 5}, {1, 3}, {2, 4} {x, y}, {6, 34}, {11, 12}";
+        Pattern pattern11a = Pattern.compile("\\{(\\d+, \\d+)\\}");
+        Matcher matcher11a = pattern11a.matcher(challenge11a);
+        while(matcher11a.find()) {
+            System.out.println("Occurrence: " + matcher11a.group(1));
+        }
+
+        String challenge12 = "11111";
+        System.out.println(challenge12.matches("^\\d{5}$"));
+
+        String challenge13 = "11111-1111";
+        System.out.println(challenge13.matches("^\\d{5}-\\d{4}$"));
+
+        System.out.println(challenge12.matches("^\\d{5}(-\\d{4})?$"));
+        System.out.println(challenge13.matches("^\\d{5}(-\\d{4})?$"));
+
+        // ^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$
+
+
 
 
     }
+
 }
+
 
